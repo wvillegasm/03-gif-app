@@ -13,7 +13,14 @@ export const SearchBar: FC<Props> = ({
 }) => {
   const [query, setQuery] = useState("");
 
+  const [query, setQuery] = useState("");
+  const [skipNextDebounce, setSkipNextDebounce] = useState(false);
+
   useEffect(() => {
+    if (skipNextDebounce) {
+      setSkipNextDebounce(false);
+      return;
+    }
     const timerId = setTimeout(() => {
       const trimmedQuery = query.trim();
       if (trimmedQuery.length < 3) return;
@@ -23,7 +30,16 @@ export const SearchBar: FC<Props> = ({
     return () => {
       clearTimeout(timerId);
     };
-  }, [query, onQueryGif]);
+  }, [query, onQueryGif, skipNextDebounce]);
+
+  const handleSearchButton = () => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 3) return;
+
+    onQueryGif(trimmedQuery);
+    setSkipNextDebounce(true);
+    setQuery("");
+  };
 
   const handleSearchButton = () => {
     const trimmedQuery = query.trim();
