@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GifList } from "./gifs/components/GifList";
 import { PreviousSearches } from "./gifs/components/PreviousSearches";
 import { mockGifs } from "./mock-data/gif.mocks";
@@ -17,13 +17,13 @@ const searchesList = [
 export const GifsApp = () => {
   const [previousTerms, setPreviousTerms] = useState(searchesList);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     const trimmedQuery = query.trim().toLocaleLowerCase();
     if (trimmedQuery.length < 3) return;
 
     setPreviousTerms((prev) => {
       // avoid duplicates
-      if (prev.find((t) => t.gifName === trimmedQuery)) {
+      if (prev.find((t) => t.gifName.toLowerCase() === trimmedQuery)) {
         return prev;
       }
 
@@ -34,9 +34,10 @@ export const GifsApp = () => {
 
       return [newTerm, ...(prev.length >= 8 ? prev.slice(0, 7) : prev)];
     });
-  };
+  }, []);
 
   const handleTermClicked = (term: string) => {
+    // TODO: implement search by term clicked - future enhancement
     console.log("Searching for:", term);
   };
 

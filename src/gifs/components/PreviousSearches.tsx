@@ -14,7 +14,7 @@ export const PreviousSearches: React.FC<Props> = ({
   const listRef = useRef<HTMLUListElement>(null);
 
   const onHandleClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const target = e.target as HTMLLIElement;
+    const target = e.currentTarget as HTMLLIElement;
     const gifName = target.dataset.gifName;
 
     console.log(gifName);

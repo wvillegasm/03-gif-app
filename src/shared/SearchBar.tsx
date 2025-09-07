@@ -15,21 +15,23 @@ export const SearchBar: FC<Props> = ({
 
   useEffect(() => {
     const timerId = setTimeout(() => {
+      if (query.trim().length < 3) return;
       onQueryGif(query);
     }, 500);
 
-    return () => clearTimeout(timerId);
-  }, [onQueryGif, query]);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [query, onQueryGif]);
 
-  const handleSearch = () => {
+  const handleSearchButton = () => {
     onQueryGif(query);
-
     setQuery("");
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSearch();
+      handleSearchButton();
     }
   };
 
@@ -42,7 +44,7 @@ export const SearchBar: FC<Props> = ({
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <button onClick={handleSearch}>{buttonName}</button>
+      <button onClick={handleSearchButton}>{buttonName}</button>
     </div>
   );
 };
