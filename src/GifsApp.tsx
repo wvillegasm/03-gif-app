@@ -5,17 +5,10 @@ import { mockGifs } from "./mock-data/gif.mocks";
 import { CustomHeader } from "./shared/CustomHeader";
 import { SearchBar } from "./shared/SearchBar";
 
-const searchesList = [
-  { gifName: "Funny Cats", id: "Funny Cats + 1" },
-  { gifName: "Funny Dogs", id: "Funny Dogs + 1" },
-  { gifName: "Funny Memes", id: "Funny Memes + 1" },
-  { gifName: "Cats", id: "Cats + 1" },
-  { gifName: "Dogs", id: "Dogs + 1" },
-  { gifName: "Memes", id: "Memes + 1" },
-];
+const initialTerms = [] as { gifName: string; id: string }[];
 
 export const GifsApp = () => {
-  const [previousTerms, setPreviousTerms] = useState(searchesList);
+  const [previousTerms, setPreviousTerms] = useState(initialTerms);
 
   const handleSearch = useCallback((query: string) => {
     const trimmedQuery = query.trim().toLowerCase();
@@ -29,7 +22,7 @@ export const GifsApp = () => {
 
       const newTerm = {
         gifName: trimmedQuery,
-        id: trimmedQuery + "-" + (prev.length + 1),
+        id: `${trimmedQuery}-${Date.now()}`,
       };
 
       return [newTerm, ...(prev.length >= 8 ? prev.slice(0, 7) : prev)];
