@@ -1,31 +1,38 @@
+import React, { useRef } from "react";
+
 interface Props {
   title: string;
-  searches: { gifName: string; id: number }[];
-  onSearch: (gifName: string) => void;
+  searches: { gifName: string; id: string }[];
+  onTermClicked: (gifName: string) => void;
 }
 
 export const PreviousSearches: React.FC<Props> = ({
   title,
   searches,
-  onSearch,
+  onTermClicked,
 }) => {
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const onHandleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const target = e.target as HTMLLIElement;
-    const gifName = target.dataset.gifname;
+    const gifName = target.dataset.gifName;
+
+    console.log(gifName);
+
     if (gifName) {
-      onSearch(gifName);
+      onTermClicked(gifName);
     }
   };
 
   return (
     <div className="previous-searches">
       <h2>{title}</h2>
-      <ul className="previous-searches-list">
+      <ul className="previous-searches-list" ref={listRef}>
         {searches.map((search) => (
           <li
             key={search.id}
-            data-gifname={search.gifName}
-            onClick={handleClick}
+            data-gif-name={search.gifName}
+            onClick={onHandleClick}
           >
             {search.gifName}
           </li>
