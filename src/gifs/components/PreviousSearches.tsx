@@ -1,4 +1,4 @@
-import React from "react";
+import { type FC, type MouseEvent } from "react";
 
 interface Props {
   title: string;
@@ -6,12 +6,12 @@ interface Props {
   onTermClicked: (gifName: string) => void;
 }
 
-export const PreviousSearches: React.FC<Props> = ({
+export const PreviousSearches: FC<Props> = ({
   title,
   searches,
   onTermClicked,
 }) => {
-  const onHandleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+  const onHandleClick = (e: MouseEvent<HTMLLIElement>) => {
     const target = e.currentTarget as HTMLLIElement;
     const gifName = target.dataset.gifName;
 

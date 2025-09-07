@@ -15,8 +15,9 @@ export const SearchBar: FC<Props> = ({
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      if (query.trim().length < 3) return;
-      onQueryGif(query);
+      const trimmedQuery = query.trim();
+      if (trimmedQuery.length < 3) return;
+      onQueryGif(trimmedQuery);
     }, 500);
 
     return () => {
@@ -25,7 +26,10 @@ export const SearchBar: FC<Props> = ({
   }, [query, onQueryGif]);
 
   const handleSearchButton = () => {
-    onQueryGif(query);
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 3) return;
+
+    onQueryGif(trimmedQuery);
     setQuery("");
   };
 

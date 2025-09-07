@@ -29,7 +29,7 @@ export const GifsApp = () => {
 
       const newTerm = {
         gifName: trimmedQuery,
-        id: trimmedQuery + "-" + prev.length + 1,
+        id: trimmedQuery + "-" + (prev.length + 1),
       };
 
       return [newTerm, ...(prev.length >= 8 ? prev.slice(0, 7) : prev)];
