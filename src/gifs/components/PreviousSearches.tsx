@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 interface Props {
   title: string;
@@ -11,13 +11,9 @@ export const PreviousSearches: React.FC<Props> = ({
   searches,
   onTermClicked,
 }) => {
-  const listRef = useRef<HTMLUListElement>(null);
-
   const onHandleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const target = e.currentTarget as HTMLLIElement;
     const gifName = target.dataset.gifName;
-
-    console.log(gifName);
 
     if (gifName) {
       onTermClicked(gifName);
@@ -27,7 +23,7 @@ export const PreviousSearches: React.FC<Props> = ({
   return (
     <div className="previous-searches">
       <h2>{title}</h2>
-      <ul className="previous-searches-list" ref={listRef}>
+      <ul className="previous-searches-list">
         {searches.map((search) => (
           <li
             key={search.id}
