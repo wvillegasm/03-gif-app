@@ -18,7 +18,7 @@ export const GifsApp = () => {
   const [previousTerms, setPreviousTerms] = useState(searchesList);
 
   const handleSearch = useCallback((query: string) => {
-    const trimmedQuery = query.trim().toLocaleLowerCase();
+    const trimmedQuery = query.trim().toLowerCase();
     if (trimmedQuery.length < 3) return;
 
     setPreviousTerms((prev) => {
