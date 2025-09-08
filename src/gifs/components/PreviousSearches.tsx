@@ -1,19 +1,22 @@
+import { type FC, type MouseEvent } from "react";
+
 interface Props {
   title: string;
-  searches: { gifName: string; id: number }[];
-  onSearch: (gifName: string) => void;
+  searches: { gifName: string; id: string }[];
+  onTermClicked: (gifName: string) => void;
 }
 
-export const PreviousSearches: React.FC<Props> = ({
+export const PreviousSearches: FC<Props> = ({
   title,
   searches,
-  onSearch,
+  onTermClicked,
 }) => {
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const target = e.target as HTMLLIElement;
-    const gifName = target.dataset.gifname;
+  const onHandleClick = (e: MouseEvent<HTMLLIElement>) => {
+    const target = e.currentTarget as HTMLLIElement;
+    const gifName = target.dataset.gifName;
+
     if (gifName) {
-      onSearch(gifName);
+      onTermClicked(gifName);
     }
   };
 
@@ -24,8 +27,8 @@ export const PreviousSearches: React.FC<Props> = ({
         {searches.map((search) => (
           <li
             key={search.id}
-            data-gifname={search.gifName}
-            onClick={handleClick}
+            data-gif-name={search.gifName}
+            onClick={onHandleClick}
           >
             {search.gifName}
           </li>

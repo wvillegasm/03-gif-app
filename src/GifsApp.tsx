@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GifList } from "./gifs/components/GifList";
 import { PreviousSearches } from "./gifs/components/PreviousSearches";
 import { mockGifs } from "./mock-data/gif.mocks";
 import { CustomHeader } from "./shared/CustomHeader";
 import { SearchBar } from "./shared/SearchBar";
 
-const searchesList = [
-  { gifName: "Funny Cats", id: 1 },
-  { gifName: "Dogs", id: 2 },
-  { gifName: "Memes", id: 3 },
-];
+const initialTerms = [] as { gifName: string; id: string }[];
 
 export const GifsApp = () => {
-  const [previousTerms, setPreviousTerms] = useState(searchesList);
+  const [previousTerms, setPreviousTerms] = useState(initialTerms);
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useCallback((query: string) => {
+    const trimmedQuery = query.trim().toLowerCase();
+    if (trimmedQuery.length < 3) return;
+
+    setPreviousTerms((prev) => {
+      // avoid duplicates
+      if (prev.find((t) => t.gifName.toLowerCase() === trimmedQuery)) {
+        return prev;
+      }
+
+      const newTerm = {
+        gifName: query.trim(), // Store original casing for display
+        id: `${trimmedQuery}-${Date.now()}`,
+      };
+
+      return [newTerm, ...(prev.length >= 8 ? prev.slice(0, 7) : prev)];
+    });
+  }, []);
+
+  const handleTermClicked = (term: string) => {
+    // TODO: implement search by term clicked - future enhancement
     console.log("Searching for:", term);
   };
 
@@ -27,15 +43,15 @@ export const GifsApp = () => {
 
       <SearchBar
         placeholder="Search GIFs..."
-        onSearch={handleSearch}
         buttonName="Search"
+        onQueryGif={handleSearch}
       />
 
       {/* previous searches */}
       <PreviousSearches
         title="Previous Searches"
         searches={previousTerms}
-        onSearch={handleSearch}
+        onTermClicked={handleTermClicked}
       />
 
       <GifList gifs={mockGifs} />

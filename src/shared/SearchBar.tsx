@@ -1,21 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState, type FC, type KeyboardEvent } from "react";
 
 interface Props {
   placeholder?: string;
   buttonName: string;
-  onSearch?: (term: string) => void;
+  onQueryGif: (query: string) => void;
 }
 
-export const SearchBar: React.FC<Props> = ({
+const MIN_QUERY_LENGTH = 3;
+
+export const SearchBar: FC<Props> = ({
   placeholder = "Search",
   buttonName,
-  onSearch,
+  onQueryGif,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState("");
+  const [skipNextDebounce, setSkipNextDebounce] = useState(false);
 
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch(searchTerm);
+  useEffect(() => {
+    if (skipNextDebounce) {
+      setSkipNextDebounce(false);
+      return;
+    }
+
+    const timerId = setTimeout(() => {
+      const trimmedQuery = query.trim();
+      if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
+      onQueryGif(trimmedQuery);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [query, onQueryGif, skipNextDebounce]);
+
+  const handleSearchButton = () => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
+
+    onQueryGif(trimmedQuery);
+    setSkipNextDebounce(true);
+    setQuery("");
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearchButton();
     }
   };
 
@@ -24,10 +53,11 @@ export const SearchBar: React.FC<Props> = ({
       <input
         type="text"
         placeholder={placeholder}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
-      <button onClick={handleSearch}>{buttonName}</button>
+      <button onClick={handleSearchButton}>{buttonName}</button>
     </div>
   );
 };
