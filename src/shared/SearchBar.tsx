@@ -12,8 +12,6 @@ export const SearchBar: FC<Props> = ({
   onQueryGif,
 }) => {
   const [query, setQuery] = useState("");
-
-  const [query, setQuery] = useState("");
   const [skipNextDebounce, setSkipNextDebounce] = useState(false);
 
   useEffect(() => {
@@ -38,14 +36,6 @@ export const SearchBar: FC<Props> = ({
 
     onQueryGif(trimmedQuery);
     setSkipNextDebounce(true);
-    setQuery("");
-  };
-
-  const handleSearchButton = () => {
-    const trimmedQuery = query.trim();
-    if (trimmedQuery.length < 3) return;
-
-    onQueryGif(trimmedQuery);
     setQuery("");
   };
 
