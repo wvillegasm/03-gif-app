@@ -6,6 +6,8 @@ interface Props {
   onQueryGif: (query: string) => void;
 }
 
+const MIN_QUERY_LENGTH = 3;
+
 export const SearchBar: FC<Props> = ({
   placeholder = "Search",
   buttonName,
@@ -22,7 +24,7 @@ export const SearchBar: FC<Props> = ({
 
     const timerId = setTimeout(() => {
       const trimmedQuery = query.trim();
-      if (trimmedQuery.length < 3) return;
+      if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
       onQueryGif(trimmedQuery);
     }, 500);
 
@@ -33,7 +35,7 @@ export const SearchBar: FC<Props> = ({
 
   const handleSearchButton = () => {
     const trimmedQuery = query.trim();
-    if (trimmedQuery.length < 3) return;
+    if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
 
     onQueryGif(trimmedQuery);
     setSkipNextDebounce(true);

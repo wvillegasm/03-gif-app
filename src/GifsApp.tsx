@@ -21,7 +21,7 @@ export const GifsApp = () => {
       }
 
       const newTerm = {
-        gifName: trimmedQuery,
+        gifName: query.trim(), // Store original casing for display
         id: `${trimmedQuery}-${Date.now()}`,
       };
 
