@@ -19,6 +19,7 @@ export const SearchBar: FC<Props> = ({
       setSkipNextDebounce(false);
       return;
     }
+
     const timerId = setTimeout(() => {
       const trimmedQuery = query.trim();
       if (trimmedQuery.length < 3) return;
