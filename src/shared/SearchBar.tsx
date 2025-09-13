@@ -71,7 +71,7 @@ export const SearchBar: FC<Props> = ({
         disabled={disabled}
         aria-disabled={disabled}
       />
-      <button onClick={handleSearchButton} disabled={disabled} aria-disabled={disabled}>
+      <button onClick={handleSearchButton} disabled={disabled}>
         {buttonName}
       </button>
     </div>
