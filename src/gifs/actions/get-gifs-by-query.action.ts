@@ -1,4 +1,3 @@
-
 import type { Gif } from '../interfaces/gif.interface';
 import type { GiphyResponse } from '../interfaces/giphy.response';
 import { giphyApi } from './giphy.api';
