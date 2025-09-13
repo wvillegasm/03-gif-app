@@ -1,21 +1,62 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, type FC, type KeyboardEvent } from "react";
 
 interface Props {
   placeholder?: string;
   buttonName: string;
-  onSearch?: (term: string) => void;
+  onQueryGif: (query: string) => void;
+  disabled?: boolean;
 }
 
-export const SearchBar: React.FC<Props> = ({
+const MIN_QUERY_LENGTH = 3;
+
+export const SearchBar: FC<Props> = ({
   placeholder = "Search",
   buttonName,
-  onSearch,
+  onQueryGif,
+  disabled = false,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState("");
+  const [skipNextDebounce, setSkipNextDebounce] = useState(false);
+  const lastSubmittedQueryRef = useRef("");
 
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch(searchTerm);
+  useEffect(() => {
+    const trimmedQuery = query.trim();
+
+    if (disabled) return;
+
+    if (skipNextDebounce) {
+      setSkipNextDebounce(false);
+      return;
+    }
+
+    if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
+    if (trimmedQuery === lastSubmittedQueryRef.current) return;
+
+    const timerId = setTimeout(() => {
+      onQueryGif(trimmedQuery);
+      lastSubmittedQueryRef.current = trimmedQuery;
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [query, onQueryGif, skipNextDebounce, disabled]);
+
+  const handleSearchButton = () => {
+    if (disabled) return;
+
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < MIN_QUERY_LENGTH) return;
+
+    onQueryGif(trimmedQuery);
+    lastSubmittedQueryRef.current = trimmedQuery;
+    setSkipNextDebounce(true);
+    setQuery("");
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearchButton();
     }
   };
 
@@ -24,10 +65,14 @@ export const SearchBar: React.FC<Props> = ({
       <input
         type="text"
         placeholder={placeholder}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        disabled={disabled}
       />
-      <button onClick={handleSearch}>{buttonName}</button>
+      <button onClick={handleSearchButton} disabled={disabled}>
+        {buttonName}
+      </button>
     </div>
   );
 };
