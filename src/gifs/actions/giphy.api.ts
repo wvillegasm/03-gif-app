@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiKey = import.meta.env.VITE_GIPHY_API_KEY;
 if (!apiKey) {
-    throw new Error("VITE_GIPHY_API_KEY is missing. Set it in your environment.");
+    console.error("VITE_GIPHY_API_KEY is missing. Giphy API requests will fail.");
 }
 
 export const giphyApi = axios.create({
