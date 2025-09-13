@@ -69,7 +69,6 @@ export const SearchBar: FC<Props> = ({
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         disabled={disabled}
-        aria-disabled={disabled}
       />
       <button onClick={handleSearchButton} disabled={disabled}>
         {buttonName}
