@@ -58,8 +58,14 @@ export const GifsApp = () => {
         const next = [newTerm, ...prev];
         return next.slice(0, 8);
       });
-    } catch (err: any) {
-      if (err?.code === "ERR_CANCELED" || controller.signal.aborted) {
+    } catch (err: unknown) {
+      if (
+        (typeof err === "object" &&
+          err !== null &&
+          "code" in err &&
+          (err as { code?: string }).code === "ERR_CANCELED") ||
+        controller.signal.aborted
+      ) {
         return;
       }
       console.error("Error fetching GIFs:", err);
