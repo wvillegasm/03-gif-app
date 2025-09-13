@@ -14,7 +14,7 @@ export const getGifsByQuery = async (query: string, limit: number = 20, signal?:
   return response.data.data.map(gif => ({
     id: gif.id,
     title: gif.title,
-    url: gif.images.original.url,
+    url: gif.images.original.webp,
     width: Number(gif.images.original.width),
     height: Number(gif.images.original.height)
   }));
