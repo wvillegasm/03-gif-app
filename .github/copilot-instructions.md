@@ -22,8 +22,10 @@ This is a React 19 + TypeScript + Vite educational project focused on learning R
   const handleQuantityChange = (name: string, delta: number) => {
     setProductItems((prevItems) =>
       prevItems.map((item) =>
-        item.name === name ? { ...item, quantity: item.quantity + delta } : item
-      )
+        item.name === name
+          ? { ...item, quantity: item.quantity + delta }
+          : item,
+      ),
     );
   };
   ```

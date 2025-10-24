@@ -1,0 +1,21 @@
+# Build outputs
+build
+dist
+coverage
+
+# Dependencies
+node_modules
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode
+.idea
+
+# Git
+.git

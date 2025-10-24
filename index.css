@@ -2,7 +2,7 @@ html,
 body {
   background-color: #242424;
   color: #fff;
-  font-family: "Montserrat Alternates", sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
 }
 
 h1 {
@@ -20,19 +20,19 @@ h1 {
 }
 
 .montserrat-light {
-  font-family: "Montserrat Alternates", sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
   font-weight: 300;
   font-style: normal;
 }
 
 .montserrat-regular {
-  font-family: "Montserrat Alternates", sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
 .montserrat-bold {
-  font-family: "Montserrat Alternates", sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
   font-weight: 700;
   font-style: normal;
 }

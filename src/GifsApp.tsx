@@ -1,17 +1,17 @@
-import { GifList } from "./gifs/components/GifList";
-import { PreviousSearches } from "./gifs/components/PreviousSearches";
-import { useGifs } from "./gifs/hooks/useGifs";
-import { CustomHeader } from "./shared/CustomHeader";
-import { SearchBar } from "./shared/SearchBar";
+import { GifList } from './gifs/components/GifList';
+import { PreviousSearches } from './gifs/components/PreviousSearches';
+import { useGifs } from './gifs/hooks/useGifs';
+import { CustomHeader } from './shared/CustomHeader';
+import { SearchBar } from './shared/SearchBar';
 
 export const GifsApp = () => {
   const {
-    previousTerms,
-    gifs,
-    loading,
     error,
+    gifs,
     handleSearch,
     handleTermClicked,
+    loading,
+    previousTerms,
   } = useGifs();
 
   return (

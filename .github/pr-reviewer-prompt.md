@@ -12,17 +12,14 @@ Follow **strictly** the standards defined in `copilot-instructions.md`. When cit
 Evaluate changes with focus on:
 
 1. **Functional correctness and architectural consistency**
-
    - The solution fulfills the PR’s goal and respects module/layer boundaries.
    - APIs/contracts/DTOs maintain compatibility or include migrations/feature flags.
 
 2. **TypeScript**
-
    - Avoid `any`, `as unknown as`, `@ts-ignore`. Prefer precise types, properly parameterized generics, discriminated unions, and exhaustiveness checks with `never`.
    - Correct narrowing, null/undefined safety, justified use of `Pick/Partial/Readonly`.
 
 3. **React (Frontend)**
-
    - Small, reusable components with clear names; props typed properly (`Props`/`FC` only if justified).
    - Stable keys in lists, correct hook dependencies, `useMemo/useCallback` only when performance impact is real.
    - Avoid unnecessary re-renders; memoization where needed; safe cleanup in effects.
@@ -30,23 +27,19 @@ Evaluate changes with focus on:
    - Performance and bundle size: tree-shaking, code splitting (`dynamic import`), avoid heavy dependencies.
 
 4. **Node.js (Backend)**
-
    - Input validation (e.g., zod/joi), correct HTTP codes, centralized error handling.
    - OWASP security: injection, XSS/SSRF, CSRF (if applicable), rate limiting, sanitization, secrets via env.
    - Idempotency where required, timeouts, retries with backoff, concurrency/transactions handled properly.
 
 5. **Testing**
-
    - Coverage for new/changed logic (unit + integration where relevant). React Testing Library/Jest/Vitest.
    - Edge cases, error paths, loading/empty states. Mocks/fakes isolated.
 
 6. **Observability & DX**
-
    - Useful logs without leaking PII, metrics/alerts where needed. Commit/PR messages clear.
    - Documentation updated (README/CHANGELOG) when the change affects users or deployment.
 
 7. **Maintainability**
-
    - Reasonable cyclomatic complexity, small functions, DRY/KISS. Dead code removed.
    - Dependencies checked (risk/licenses/lighter alternatives preferred).
 
@@ -71,7 +64,6 @@ Provide the review structured as follows:
 - **Summary**: 2–5 lines on what the PR does and overall status.
 - **Change Map**: brief list of files/areas touched.
 - **Comments**
-
   - **Blocking**: …
   - **Improvement**: …
   - **Nit**: …
@@ -85,7 +77,6 @@ Provide the review structured as follows:
 - **Recommended Tests**: missing cases to cover.
 - **Risks & Mitigations**: brief risk → mitigation/monitoring matrix.
 - **Checklist** (mark ✅/❌ and cite `copilot-instructions.md` rule where relevant):
-
   - Strict TS typing
   - Basic accessibility in touched UI
   - Error & state handling (loading/empty/error)

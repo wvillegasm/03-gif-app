@@ -45,7 +45,7 @@
 ```tsx
 const handleDeleteItem = (name: string) => {
   setProductItems((prevItems) =>
-    prevItems.filter((item) => item.name !== name)
+    prevItems.filter((item) => item.name !== name),
   );
 };
 ```

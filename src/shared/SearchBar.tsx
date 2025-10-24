@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type FC, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+  type KeyboardEvent,
+} from 'react';
 
 interface Props {
   placeholder?: string;
@@ -10,14 +16,14 @@ interface Props {
 const MIN_QUERY_LENGTH = 3;
 
 export const SearchBar: FC<Props> = ({
-  placeholder = "Search",
+  placeholder = 'Search',
   buttonName,
   onQueryGif,
   disabled = false,
 }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [skipNextDebounce, setSkipNextDebounce] = useState(false);
-  const lastSubmittedQueryRef = useRef("");
+  const lastSubmittedQueryRef = useRef('');
 
   useEffect(() => {
     const trimmedQuery = query.trim();
@@ -51,11 +57,11 @@ export const SearchBar: FC<Props> = ({
     onQueryGif(trimmedQuery);
     lastSubmittedQueryRef.current = trimmedQuery;
     setSkipNextDebounce(true);
-    setQuery("");
+    setQuery('');
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSearchButton();
     }
   };

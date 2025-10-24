@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getGifsByQuery } from "../actions/get-gifs-by-query.action";
-import type { Gif } from "../interfaces/gif.interface";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { getGifsByQuery } from '../actions/get-gifs-by-query.action';
+import type { Gif } from '../interfaces/gif.interface';
 
 const initialTerms = [] as { gifName: string; id: string }[];
+
+const gifsCache = new Map<string, Gif[]>();
 
 export const useGifs = (options?: {
   limit?: number;
@@ -29,6 +31,7 @@ export const useGifs = (options?: {
       if (abortRef.current) {
         abortRef.current.abort();
       }
+
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -36,18 +39,24 @@ export const useGifs = (options?: {
       setLoading(true);
 
       try {
-        const gifs = await getGifsByQuery(
-          trimmedQuery,
-          limit,
-          controller.signal
-        );
+        let gifs = gifsCache.get(trimmedQuery);
+
+        if (gifs) {
+          setGifs(gifs);
+          return;
+        }
+
+        gifs = await getGifsByQuery(trimmedQuery, limit, controller.signal);
+
         if (requestId !== requestIdRef.current) return;
 
         setGifs(gifs);
+        // update cache
+        gifsCache.set(trimmedQuery, gifs);
 
         setPreviousTerms((prev) => {
           const existingIndex = prev.findIndex(
-            (t) => t.gifName === trimmedQuery
+            (t) => t.gifName === trimmedQuery,
           );
 
           if (existingIndex !== -1) {
@@ -68,23 +77,23 @@ export const useGifs = (options?: {
       } catch (err: unknown) {
         if (
           controller.signal.aborted ||
-          (err instanceof DOMException && err.name === "AbortError") ||
-          (typeof err === "object" &&
+          (err instanceof DOMException && err.name === 'AbortError') ||
+          (typeof err === 'object' &&
             err !== null &&
-            (("code" in err && (err as any).code === "ERR_CANCELED") ||
-              ("name" in err && (err as any).name === "CanceledError")))
+            (('code' in err && (err as any).code === 'ERR_CANCELED') ||
+              ('name' in err && (err as any).name === 'CanceledError')))
         ) {
           return;
         }
-        console.error("Error fetching GIFs:", err);
-        setError("Failed to fetch GIFs. Please try again.");
+        console.error('Error fetching GIFs:', err);
+        setError('Failed to fetch GIFs. Please try again.');
       } finally {
         if (requestId === requestIdRef.current) {
           setLoading(false);
         }
       }
     },
-    [limit, minQueryLength, maxHistory]
+    [limit, minQueryLength, maxHistory],
   );
 
   const handleSearchDebounced = useCallback(
@@ -94,7 +103,7 @@ export const useGifs = (options?: {
         void handleSearch(q);
       }, delay);
     },
-    [handleSearch]
+    [handleSearch],
   );
 
   const handleTermClicked = (term: string) => {
@@ -111,12 +120,14 @@ export const useGifs = (options?: {
   }, []);
 
   return {
-    previousTerms,
+    // props
     gifs,
-    loading,
+    // methods
     error,
     handleSearch,
     handleSearchDebounced,
     handleTermClicked,
+    loading,
+    previousTerms,
   };
 };

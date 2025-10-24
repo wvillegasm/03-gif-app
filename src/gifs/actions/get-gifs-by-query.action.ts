@@ -12,20 +12,24 @@ import { giphyApi } from './giphy.api';
  * @remarks The `webp` format is chosen for the GIF URLs due to its superior compression and support for animation,
  * offering a good balance between file size and quality compared to `gif` or `mp4`.
  */
-export const getGifsByQuery = async (query: string, limit: number = 20, signal?: AbortSignal): Promise<Gif[]> => {
+export const getGifsByQuery = async (
+  query: string,
+  limit: number = 20,
+  signal?: AbortSignal,
+): Promise<Gif[]> => {
   const response = await giphyApi<GiphyResponse>('/search', {
     params: {
       q: query,
-      limit
+      limit,
     },
-    signal
+    signal,
   });
 
-  return response.data.data.map(gif => ({
+  return response.data.data.map((gif) => ({
     id: gif.id,
     title: gif.title,
     url: gif.images.original.webp ?? gif.images.original.url,
     width: Number(gif.images.original.width),
-    height: Number(gif.images.original.height)
+    height: Number(gif.images.original.height),
   }));
 };
